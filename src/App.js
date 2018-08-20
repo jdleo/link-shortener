@@ -2,7 +2,66 @@ import React, { Component } from 'react';
 import {Button, Textfield} from 'react-mdl';
 import './App.css';
 
+var crypto = require('crypto');
+var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 class App extends Component {
+
+  handleChange(e) {
+    this.setState({
+      text: e.target.value
+    });
+  }
+
+  generateLink() {
+    //hash the link with some nonces
+    const hash = crypto.createHash('sha256').update(this.state.text + '_' + Date.now() + Math.random()).digest('hex');
+    //result link hash
+    var res = "";
+    //loop by fours
+    for (var i = 0; i < 24; i += 4) {
+      //take 4-byte chunks of hex digest (sha256 result hash)
+      var chunk = hash.substring(i,i+4);
+      //convert chunk to decimal
+      chunk = parseInt(chunk, 16);
+      //take decimal mod 62 for result character for link hash
+      res += chars.charAt(chunk % 62);
+    }
+
+    this.setState({
+      lastLink: res
+    })
+  }
+
+  renderLink() {
+    if (this.state.lastLink) {
+      return (
+        <div style ={{
+            'width':'700px',
+            'padding-top':'20px',
+            'padding-bottom':'20px',
+            'margin': '0 auto',
+            'marginTop': '20px',
+            'border-radius': '10px',
+            'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
+          }}>
+          <a href={`http://sac.cx/${this.state.lastLink}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}`}</a>
+        </div>
+      )
+    }
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      text: '',
+      lastLink: ''
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
   render() {
     return (
       <div style={{
@@ -31,7 +90,7 @@ class App extends Component {
           }}>
           <Textfield
               style={{'width':'600px'}}
-              onChange={() => {}}
+              onChange={this.handleChange}
               pattern="^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$"
               error="Input is not a link 😑"
               label="Link to shorten"
@@ -44,9 +103,10 @@ class App extends Component {
               'font-size':'20px',
               'border-radius': '50px',
               'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
-            }}>Short</Button>
+            }} onClick={() => {this.generateLink()}}>Short</Button>
           <br/><br/>
         </div>
+        {this.renderLink()}
       </div>
     );
   }
