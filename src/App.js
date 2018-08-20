@@ -26,7 +26,7 @@ class App extends Component {
             'padding-bottom':'20px',
             'margin': '0 auto',
             'marginTop': '50px',
-            'border-radius': '4px',
+            'border-radius': '10px',
             'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
           }}>
           <Textfield
@@ -38,7 +38,13 @@ class App extends Component {
               floatingLabel
           />
           <br/><br/>
-          <Button raised ripple colored style={{'width':'200px', 'height': '50px', 'font-size':'20px'}}>Short</Button>
+          <Button raised ripple colored style={{
+              'width':'200px',
+              'height': '50px',
+              'font-size':'20px',
+              'border-radius': '50px',
+              'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
+            }}>Short</Button>
           <br/><br/>
         </div>
       </div>
