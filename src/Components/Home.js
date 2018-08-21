@@ -51,7 +51,7 @@ class Home extends Component {
         firebase.database().ref('links/' + res).set({
           link: this.state.text,
           visits: 0,
-          password: (crypto.createHash('sha256').update(this.state.lastLink).digest('hex')).substring(0,8)
+          password: (crypto.createHash('sha256').update(res).digest('hex')).substring(0,8)
         }, function(error) {
           if (error) {
             // The write failed...
