@@ -8,6 +8,7 @@ var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var firebase = require("firebase");
 //for local testing
 //var serviceAccount = require('../keys/firebaseKey.json');
+console.log(process.env.apiKey);
 firebase.initializeApp({
     "apiKey": process.env.apiKey,
     "authDomain": process.env.authDomain,
