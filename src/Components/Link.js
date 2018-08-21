@@ -2,9 +2,18 @@ import React, { Component } from 'react';
 import '../App.css';
 
 var firebase = require("firebase");
-var serviceAccount = require('../keys/firebaseKey.json');
+//for local testing
+//var serviceAccount = require('../keys/firebaseKey.json');
 if (!firebase.apps.length) {
-    firebase.initializeApp(serviceAccount);
+  firebase.initializeApp(
+    {
+      "apiKey": process.env.apiKey,
+      "authDomain": process.env.authDomain,
+      "databaseURL": process.env.databaseURL,
+      "projectId": process.env.projectId,
+      "storageBucket": process.env.storageBucket,
+      "messagingSenderId": process.env.messagingSenderId
+    });
 }
 
 class Link extends Component {
