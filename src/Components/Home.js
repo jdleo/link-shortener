@@ -55,7 +55,9 @@ class Home extends Component {
       } else {
         firebase.database().ref('linkCount').transaction(function(count) {
           if (count) {
-            count++
+            count++;
+          } else {
+            return 1;
           }
           return count;
         });
