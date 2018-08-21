@@ -4,7 +4,7 @@
   "private": true,
   "proxy": "http://localhost:8080",
   "dependencies": {
-    "firebase-admin": "^6.0.0",
+    "firebase": "^5.4.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-mdl": "^1.11.0",

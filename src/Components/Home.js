@@ -5,12 +5,29 @@ import '../App.css';
 var crypto = require('crypto');
 var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+var firebase = require("firebase");
+var serviceAccount = require('../keys/firebaseKey.json');
+firebase.initializeApp(serviceAccount);
+
 class Home extends Component {
 
   handleChange(e) {
     this.setState({
-      text: e.target.value
+      text: e.target.value,
     });
+  }
+
+  componentDidMount() {
+    firebase.auth().signInAnonymously().catch(function(error) {
+    });
+
+    var that = this;
+    firebase.database().ref('/linkCount').once('value').then(function(snapshot) {
+      console.log(snapshot.val());
+      that.setState({
+        linkCount: snapshot.val()
+      })
+    })
   }
 
   generateLink() {
@@ -73,7 +90,8 @@ class Home extends Component {
 
     this.state = {
       text: '',
-      lastLink: ''
+      lastLink: '',
+      linkCount: 0
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -123,6 +141,19 @@ class Home extends Component {
             }} onClick={() => {this.generateLink()}}>Short</Button>
         </div>
         {this.renderLink()}
+        <h5>Links generated on sac.cx:</h5>
+        <div style = {{
+            'width':'300px',
+            'padding-top':'1px',
+            'padding-bottom':'4px',
+            'margin': '0 auto',
+            'border-radius': '50px',
+            'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
+          }}>
+          <h4 style={{'color': 'blue', 'font-weight':'bold'}}>
+            {parseInt(this.state.linkCount).toLocaleString()}
+          </h4>
+        </div>
       </div>
     );
   }
