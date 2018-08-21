@@ -34,18 +34,35 @@ class App extends Component {
   }
 
   renderLink() {
+    var analyticsPassword = crypto.createHash('sha256').update(this.state.lastLink).digest('hex');
+    analyticsPassword = analyticsPassword.substring(0,8);
     if (this.state.lastLink) {
       return (
-        <div style ={{
-            'width':'700px',
-            'padding-top':'20px',
-            'padding-bottom':'20px',
-            'margin': '0 auto',
-            'marginTop': '20px',
-            'border-radius': '10px',
-            'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
-          }}>
-          <a href={`http://sac.cx/${this.state.lastLink}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}`}</a>
+        <div>
+          <h5>Link:</h5>
+          <div style ={{
+              'width':'700px',
+              'padding-top':'20px',
+              'padding-bottom':'20px',
+              'margin': '0 auto',
+              'marginTop': '5px',
+              'border-radius': '10px',
+              'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
+            }}>
+            <a href={`http://sac.cx/${this.state.lastLink}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}`}</a>
+          </div>
+          <h5>Link analytics:</h5>
+          <div style ={{
+              'width':'700px',
+              'padding-top':'20px',
+              'padding-bottom':'20px',
+              'margin': '0 auto',
+              'marginTop': '5px',
+              'border-radius': '10px',
+              'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
+            }}>
+            <a href={`http://sac.cx/${this.state.lastLink}/${analyticsPassword}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}/${analyticsPassword}`}</a>
+          </div>
         </div>
       )
     }
