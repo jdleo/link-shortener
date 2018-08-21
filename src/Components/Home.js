@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Textfield} from 'react-mdl';
+import {Button, Textfield, Dialog, DialogTitle, DialogContent, DialogActions} from 'react-mdl';
 import '../App.css';
 
 var crypto = require('crypto');
@@ -44,28 +44,36 @@ class Home extends Component {
       res += chars.charAt(chunk % 62);
     }
 
-    var that = this;
-    firebase.database().ref('links/' + res).set({
-      link: this.state.text,
-      visits: 0,
-      password: (crypto.createHash('sha256').update(this.state.lastLink).digest('hex')).substring(0,8)
-    }, function(error) {
-      if (error) {
-        // The write failed...
-      } else {
-        firebase.database().ref('linkCount').transaction(function(count) {
-          if (count) {
-            count++;
-          } else {
-            return 1;
-          }
-          return count;
-        });
-        that.setState({
-          lastLink: res
-        })
-      }
-    });
+    var pattern = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&'\(\)\*\+,;=.]+$/);
+    if (pattern.test(this.state.text)) {
+      var that = this;
+      firebase.database().ref('links/' + res).set({
+        link: this.state.text,
+        visits: 0,
+        password: (crypto.createHash('sha256').update(this.state.lastLink).digest('hex')).substring(0,8)
+      }, function(error) {
+        if (error) {
+          // The write failed...
+        } else {
+          firebase.database().ref('linkCount').transaction(function(count) {
+            if (count) {
+              count++;
+            } else {
+              return 1;
+            }
+            return count;
+          });
+          that.setState({
+            lastLink: res
+          })
+        }
+      });
+    } else {
+      this.setState({
+        errorMsg: "Your link is invalid.",
+        openDialog: true
+      })
+    }
   }
 
   renderLink() {
@@ -84,7 +92,7 @@ class Home extends Component {
               'border-radius': '10px',
               'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
             }}>
-            <a href={`http://sac.cx/${this.state.lastLink}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}`}</a>
+            <a href={`http://localhost:3000/${this.state.lastLink}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}`}</a>
           </div>
           <h5>Link analytics:</h5>
           <div style ={{
@@ -96,11 +104,23 @@ class Home extends Component {
               'border-radius': '10px',
               'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
             }}>
-            <a href={`http://sac.cx/${this.state.lastLink}/${analyticsPassword}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}/${analyticsPassword}`}</a>
+            <a href={`http://localhost:3000/${this.state.lastLink}/${analyticsPassword}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}/${analyticsPassword}`}</a>
           </div>
         </div>
       )
     }
+  }
+
+  handleOpenDialog() {
+    this.setState({
+      openDialog: true
+    });
+  }
+
+  handleCloseDialog() {
+    this.setState({
+      openDialog: false
+    });
   }
 
   constructor(props) {
@@ -109,9 +129,13 @@ class Home extends Component {
     this.state = {
       text: '',
       lastLink: '',
-      linkCount: 0
+      linkCount: 0,
+      errorMsg: '',
+      openDialog: false
     };
 
+    this.handleOpenDialog = this.handleOpenDialog.bind(this);
+    this.handleCloseDialog = this.handleCloseDialog.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -158,6 +182,17 @@ class Home extends Component {
               'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
             }} onClick={() => {this.generateLink()}}>Short</Button>
         </div>
+
+        <Dialog open={this.state.openDialog}>
+          <DialogTitle>Error</DialogTitle>
+          <DialogContent>
+            <p>{this.state.errorMsg}</p>
+          </DialogContent>
+          <DialogActions fullWidth>
+            <Button type='button' onClick={this.handleCloseDialog}>Okay</Button>
+          </DialogActions>
+        </Dialog>
+
         {this.renderLink()}
         <h5>Links generated on sac.cx:</h5>
         <div style = {{
