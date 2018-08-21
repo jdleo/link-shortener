@@ -7,7 +7,7 @@ class Link extends Component {
   render() {
     return (
       <div>
-        link  page
+        {this.props.history.location.pathname}
       </div>
     );
   }

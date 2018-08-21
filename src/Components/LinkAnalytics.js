@@ -7,7 +7,7 @@ class LinkAnalytics extends Component {
   render() {
     return (
       <div>
-        link analytics page
+        {this.props.history.location.pathname}
       </div>
     );
   }

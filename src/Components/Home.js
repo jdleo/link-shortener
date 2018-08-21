@@ -121,7 +121,6 @@ class Home extends Component {
               'border-radius': '50px',
               'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
             }} onClick={() => {this.generateLink()}}>Short</Button>
-          <br/><br/>
         </div>
         {this.renderLink()}
       </div>
