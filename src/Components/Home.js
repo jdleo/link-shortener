@@ -101,7 +101,7 @@ class Home extends Component {
               'border-radius': '10px',
               'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
             }}>
-            <a href={`http://localhost:3000/${this.state.lastLink}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}`}</a>
+            <a href={`http://sac-cx.herokuapp.com/${this.state.lastLink}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}`}</a>
           </div>
           <h5>Link analytics:</h5>
           <div style ={{
@@ -113,7 +113,7 @@ class Home extends Component {
               'border-radius': '10px',
               'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
             }}>
-            <a href={`http://localhost:3000/${this.state.lastLink}/${analyticsPassword}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}/${analyticsPassword}`}</a>
+            <a href={`http://sac-cx.herokuapp.com/${this.state.lastLink}/${analyticsPassword}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}/${analyticsPassword}`}</a>
           </div>
         </div>
       )
