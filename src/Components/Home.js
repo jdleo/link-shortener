@@ -46,28 +46,37 @@ class Home extends Component {
 
     var pattern = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&'\(\)\*\+,;=.]+$/);
     if (pattern.test(this.state.text)) {
-      var that = this;
-      firebase.database().ref('links/' + res).set({
-        link: this.state.text,
-        visits: 0,
-        password: (crypto.createHash('sha256').update(this.state.lastLink).digest('hex')).substring(0,8)
-      }, function(error) {
-        if (error) {
-          // The write failed...
-        } else {
-          firebase.database().ref('linkCount').transaction(function(count) {
-            if (count) {
-              count++;
-            } else {
-              return 1;
-            }
-            return count;
-          });
-          that.setState({
-            lastLink: res
-          })
-        }
-      });
+      if ((Date.now() - this.state.lastSubmit) > 10000) {
+        var that = this;
+        firebase.database().ref('links/' + res).set({
+          link: this.state.text,
+          visits: 0,
+          password: (crypto.createHash('sha256').update(this.state.lastLink).digest('hex')).substring(0,8)
+        }, function(error) {
+          if (error) {
+            // The write failed...
+          } else {
+            firebase.database().ref('linkCount').transaction(function(count) {
+              if (count) {
+                count++;
+              } else {
+                return 1;
+              }
+              return count;
+            });
+            that.setState({
+              lastLink: res,
+              lastSubmit: Date.now()
+            })
+          }
+        });
+      } else {
+        this.setState({
+          errorMsg: "You're doing that too much. Wait 10 seconds in between submitting.",
+          openDialog: true
+        })
+      }
+
     } else {
       this.setState({
         errorMsg: "Your link is invalid.",
@@ -131,7 +140,8 @@ class Home extends Component {
       lastLink: '',
       linkCount: 0,
       errorMsg: '',
-      openDialog: false
+      openDialog: false,
+      lastSubmit: 0
     };
 
     this.handleOpenDialog = this.handleOpenDialog.bind(this);
