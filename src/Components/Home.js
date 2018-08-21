@@ -10,12 +10,12 @@ var firebase = require("firebase");
 //var serviceAccount = require('../keys/firebaseKey.json');
 console.log(process.env.apiKey);
 firebase.initializeApp({
-    "apiKey": process.env.apiKey,
-    "authDomain": process.env.authDomain,
-    "databaseURL": process.env.databaseURL,
-    "projectId": process.env.projectId,
-    "storageBucket": process.env.storageBucket,
-    "messagingSenderId": process.env.messagingSenderId
+    "apiKey": process.env.REACT_APP_apiKey,
+    "authDomain": process.env.REACT_APP_authDomain,
+    "databaseURL": process.env.REACT_APP_databaseURL,
+    "projectId": process.env.REACT_APP_projectId,
+    "storageBucket": process.env.REACT_APP_storageBucket,
+    "messagingSenderId": process.env.REACT_APP_messagingSenderId
 });
 
 class Home extends Component {
