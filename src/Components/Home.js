@@ -8,7 +8,6 @@ var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var firebase = require("firebase");
 //for local testing
 //var serviceAccount = require('../keys/firebaseKey.json');
-console.log(process.env.apiKey);
 firebase.initializeApp({
     "apiKey": process.env.REACT_APP_apiKey,
     "authDomain": process.env.REACT_APP_authDomain,
@@ -110,7 +109,7 @@ class Home extends Component {
               'border-radius': '10px',
               'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
             }}>
-            <a href={`http://sac-cx.herokuapp.com/${this.state.lastLink}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}`}</a>
+            <a href={`http://sac.cx/${this.state.lastLink}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}`}</a>
           </div>
           <h5>Link analytics:</h5>
           <div style ={{
@@ -122,7 +121,7 @@ class Home extends Component {
               'border-radius': '10px',
               'box-shadow': '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
             }}>
-            <a href={`http://sac-cx.herokuapp.com/${this.state.lastLink}/${analyticsPassword}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}/${analyticsPassword}`}</a>
+            <a href={`http://sac.cx/${this.state.lastLink}/${analyticsPassword}`} style={{'font-size':'30px'}}>{`sac.cx/${this.state.lastLink}/${analyticsPassword}`}</a>
           </div>
         </div>
       )
