@@ -9,14 +9,12 @@ var firebase = require("firebase");
 //for local testing
 //var serviceAccount = require('../keys/firebaseKey.json');
 firebase.initializeApp({
-  {
     "apiKey": process.env.apiKey,
     "authDomain": process.env.authDomain,
     "databaseURL": process.env.databaseURL,
     "projectId": process.env.projectId,
     "storageBucket": process.env.storageBucket,
     "messagingSenderId": process.env.messagingSenderId
-  }
 });
 
 class Home extends Component {
