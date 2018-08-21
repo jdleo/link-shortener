@@ -16,6 +16,16 @@ class Link extends Component {
         that.setState({
           redirectLink: snapshot.val().link
         });
+
+        firebase.database().ref('links/' + that.props.history.location.pathname.split('/')[1] + '/visits').transaction(function(count) {
+          if (count) {
+            count++;
+          } else {
+            return 1;
+          }
+          return count;
+        });
+
         if (snapshot.val().link.startsWith('http://') || snapshot.val().link.startsWith('https://')) {
           window.open(snapshot.val().link, "_self");
         } else {
