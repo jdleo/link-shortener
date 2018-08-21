@@ -22,12 +22,11 @@ class Home extends Component {
     });
 
     var that = this;
-    firebase.database().ref('/linkCount').once('value').then(function(snapshot) {
-      console.log(snapshot.val());
+    firebase.database().ref('/linkCount').on('value', function(snapshot) {
       that.setState({
         linkCount: snapshot.val()
       })
-    })
+    });
   }
 
   generateLink() {
