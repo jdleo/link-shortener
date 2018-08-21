@@ -44,9 +44,26 @@ class Home extends Component {
       res += chars.charAt(chunk % 62);
     }
 
-    this.setState({
-      lastLink: res
-    })
+    var that = this;
+    firebase.database().ref('links/' + res).set({
+      link: this.state.text,
+      visits: 0,
+      password: (crypto.createHash('sha256').update(this.state.lastLink).digest('hex')).substring(0,8)
+    }, function(error) {
+      if (error) {
+        // The write failed...
+      } else {
+        firebase.database().ref('linkCount').transaction(function(count) {
+          if (count) {
+            count++
+          }
+          return count;
+        });
+        that.setState({
+          lastLink: res
+        })
+      }
+    });
   }
 
   renderLink() {
